@@ -4,7 +4,7 @@ from phonoSensors import circleSensors
 sensors = circleSensors( radius=20e3, sensors=10 )
 
 # create sound in the circle centre
-sound = {x:0, y:0, t:0}
+sound = {'x':0, 'y':0, 't':0}
 
 # calculate ideal sensor output
 sensorReadings = sensors.idealReadings( sound )
