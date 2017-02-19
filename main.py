@@ -13,6 +13,6 @@ sensorReadings = sensors.idealReadings( sound )
 # sensorReadings.missRandomReadings( pct=20 )
 
 # reverse-find sound source
-soundFound = sensorReadings.calcSound()
+soundFound = sensors.detectSingleSound(sensorReadings)
 
 print soundFound

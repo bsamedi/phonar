@@ -40,6 +40,18 @@ class TestCircleSensors(unittest.TestCase):
         self.assertAlmostEquals(math.sqrt((s0['x']-5)*2 + (s0['y']-4)**2), 15, 5)
         self.assertAlmostEquals(math.sqrt((s1['x']-5)*2 + (s1['y']-4)**2), 15, 5)
 
+class TestDetectSource(unittest.TestCase):
+    def test_fourSensors(self):
+        s = phonoSensors()
+        s.add(0, 1)
+        s.add(1, 0)
+        s.add(0, -1)
+        s.add(-1, 0)
+        soundOriginal = (0, 0, 0)
+        readings = s.idealReadings(*soundOriginal)
+        soundDetected = s.detectSource(readings, 1)
+        print('soundDetected {}'.format(soundDetected))
+
 if __name__ == '__main__':
     unittest.main()
 
