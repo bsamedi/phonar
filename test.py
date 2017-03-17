@@ -83,17 +83,18 @@ class TestCircleSensors(unittest.TestCase):
         self.assertAlmostEquals( s.space.distance(s0, center), 15, 5)
         self.assertAlmostEquals( s.space.distance(s1, center), 15, 5)
 
-# class TestDetectSource(unittest.TestCase):
-    # def test_fourSensors(self):
-        # s = phonoSensors()
-        # s.add(0, 1)
-        # s.add(1, 0)
-        # s.add(0, -1)
-        # s.add(-1, 0)
-        # soundOriginal = (0, 0, 0)
-        # readings = s.idealReadings(*soundOriginal)
-        # soundDetected = s.detectSource(readings, 1)
-        # print('soundDetected {}'.format(soundDetected))
+class TestDetectSource(unittest.TestCase):
+    def test_fourSensors(self):
+        s = phonoSensors(space2D())
+        s.add( (0, 0) )
+        s.add( (1, 1) )
+        s.add( (0, -1) )
+        s.add( (-1, 0) )
+        soundOriginal = (0, 0, 0)
+        readings = s.idealReadings( soundOriginal )
+        print('\nReadings:\n{}\n'.format(readings))
+        soundDetected = s.detectSource(readings, 1)
+        print('\nsoundDetected\n{}\n'.format(soundDetected))
 
 if __name__ == '__main__':
     unittest.main()
