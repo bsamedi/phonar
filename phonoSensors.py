@@ -1,7 +1,8 @@
-import math
 import random
 
 class phonoSensors:
+    SPEED_OF_SOUND=0.34029 # km per second
+
     def __init__(self, space = None):
         self.sensors = []
         self.space = space
@@ -38,15 +39,3 @@ class phonoSensors:
             
         
         # return sounds
-    
-    SPEED_OF_SOUND=0.34029 # km per second
-
-class circleSensors(phonoSensors):
-    def __init__(self, radius, sensors, center={'x':0,'y':0}):
-        phonoSensors.__init__(self)
-        angleStep = math.pi*2/sensors
-        for i in range(0, sensors):
-            angle = angleStep * i
-            x = center['x'] + math.sin(angle)*radius
-            y = center['y'] + math.cos(angle)*radius
-            self.add(x=x, y=y)

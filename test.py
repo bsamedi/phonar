@@ -58,27 +58,29 @@ class TestPhonoSensors(unittest.TestCase):
         readings = s.idealReadings( (0, 0, 0) )
         self.assertAlmostEqual(space.extractTime(readings[0]), 10/0.34029, 2)
 
-    # def test_oneIdealReading(self):
-        # s = phonoSensors()
-        # s.add(3, 4)
-        # readings = s.idealReadings(-30, -40, 4)
-        # self.assertAlmostEqual(readings[0]['t'], 4 + 55/0.34029, 2)
+    def test_oneIdealReading2(self):
+        space = space2D()
+        s = phonoSensors(space)
+        s.add( (3, 4) )
+        readings = s.idealReadings( (-30, -40, 4) )
+        self.assertAlmostEqual( space.extractTime(readings[0]), 4 + 55/0.34029, 2)
 
-# from phonoSensors import circleSensors
-# import math
-# class TestCircleSensors(unittest.TestCase):
-    # def test_eightSensors(self):
-        # s = circleSensors( radius=15, center={'x':5, 'y':4}, sensors = 8)
-        # self.assertEqual(len(s.sensors), 8)
+from circleSensors import circleSensors
+from math import sqrt
+class TestCircleSensors(unittest.TestCase):
+    def test_eightSensors(self):
+        space = space2D()
+        s = circleSensors(radius=15, center=(5, 4), sensors = 8)
+        self.assertEqual(len(s.sensors), 8)
 
-    # def test_twoSensors(self):
-        # s = circleSensors( radius=15, center={'x':5, 'y':4}, sensors = 2)
-        # self.assertEqual(len(s.sensors), 2)
-        # s0 = s.sensors[0]
-        # s1 = s.sensors[1]
-        # self.assertAlmostEquals(math.sqrt((s0['x']-s1['x'])*2 + (s0['y']-s1['y'])**2), 15*2, 5)
-        # self.assertAlmostEquals(math.sqrt((s0['x']-5)*2 + (s0['y']-4)**2), 15, 5)
-        # self.assertAlmostEquals(math.sqrt((s1['x']-5)*2 + (s1['y']-4)**2), 15, 5)
+    def test_twoSensors(self):
+        s = circleSensors( radius=15, center=(5, 4), sensors = 2)
+        self.assertEqual(len(s.sensors), 2)
+        s0 = s.sensors[0]
+        s1 = s.sensors[1]
+        self.assertAlmostEquals( sqrt((s0[0]-s1[0])*2 + (s0[1]-s1[1])**2), 15*2, 5)
+        self.assertAlmostEquals( sqrt((s0[0]-5)*2 + (s0[1]-4)**2), 15, 5)
+        self.assertAlmostEquals( sqrt((s1[0]-5)*2 + (s1[1]-4)**2), 15, 5)
 
 # class TestDetectSource(unittest.TestCase):
     # def test_fourSensors(self):
