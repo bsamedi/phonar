@@ -1,22 +1,23 @@
 import math
 import random
 
-def distance(point1, point2):
-    return math.sqrt( float(point1['x']-point2['x'])**2 + (point1['y']-point2['y'])**2 )
-
 class phonoSensors:
-    def __init__(self):
+    def __init__(self, space = None):
         self.sensors = []
+        self.space = space
         
-    def add(self, x, y):
-        self.sensors.append( {'x':x, 'y':y} )
+    def add(self, sensorPoint):
+        self.sensors.append( sensorPoint )
     
-    def idealReadings(self, soundX, soundY, soundT):
+    def idealReadings(self, soundSpaceTimePoint):
+        space = self.space
+        soundPoint = space.extractPoint( soundSpaceTimePoint )
+        soundTime = space.extractTime( soundSpaceTimePoint )
         readings = []
         for sensor in self.sensors:
-            sensorDistance = distance( {'x':sensor['x'], 'y':sensor['y']}, {'x':soundX, 'y':soundY} )
-            sensorTime = sensorDistance / phonoSensors.SPEED_OF_SOUND
-            readings.append({'x':sensor['x'], 'y':sensor['y'], 't':sensorTime+soundT})
+            sensorDistance = space.distance(sensor, soundPoint)
+            timeToSensor = sensorDistance / phonoSensors.SPEED_OF_SOUND
+            readings.append( space.pointTime(sensor, soundTime + timeToSensor))
         return readings
     
     # def detectSource(self, readings, numSounds):
