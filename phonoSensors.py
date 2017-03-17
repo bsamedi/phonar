@@ -10,10 +10,10 @@ class phonoSensors:
     def add(self, sensorPoint):
         self.sensors.append( sensorPoint )
     
-    def idealReadings(self, soundSpaceTimePoint):
+    def idealReadings(self, soundPointTime):
         space = self.space
-        soundPoint = space.extractPoint( soundSpaceTimePoint )
-        soundTime = space.extractTime( soundSpaceTimePoint )
+        soundPoint = space.extractPoint( soundPointTime )
+        soundTime = space.extractTime( soundPointTime )
         readings = []
         for sensor in self.sensors:
             sensorDistance = space.distance(sensor, soundPoint)

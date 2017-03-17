@@ -74,13 +74,14 @@ class TestCircleSensors(unittest.TestCase):
         self.assertEqual(len(s.sensors), 8)
 
     def test_twoSensors(self):
-        s = circleSensors( radius=15, center=(5, 4), sensors = 2)
+        center = (5, 4)
+        s = circleSensors( radius=15, center=center, sensors = 2)
         self.assertEqual(len(s.sensors), 2)
         s0 = s.sensors[0]
         s1 = s.sensors[1]
-        self.assertAlmostEquals( sqrt((s0[0]-s1[0])*2 + (s0[1]-s1[1])**2), 15*2, 5)
-        self.assertAlmostEquals( sqrt((s0[0]-5)*2 + (s0[1]-4)**2), 15, 5)
-        self.assertAlmostEquals( sqrt((s1[0]-5)*2 + (s1[1]-4)**2), 15, 5)
+        self.assertAlmostEquals( s.space.distance(s0, s1), 15*2, 5)
+        self.assertAlmostEquals( s.space.distance(s0, center), 15, 5)
+        self.assertAlmostEquals( s.space.distance(s1, center), 15, 5)
 
 # class TestDetectSource(unittest.TestCase):
     # def test_fourSensors(self):
