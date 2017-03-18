@@ -4,15 +4,18 @@ import numpy as np
 class phonoSensors:
     SPEED_OF_SOUND=0.34029 # km per second
 
-    def __init__(self, space = None):
+    def __init__(self, space):
         self.sensors = []
-        self.space = space
+        self.mSpace = space
 
     def add(self, sensorPoint):
         self.sensors.append( sensorPoint )
 
+    def space(self):
+        return self.mSpace
+
     def idealReadings(self, soundPointTime):
-        space = self.space
+        space = self.mSpace
         soundPoint = space.extractPoint( soundPointTime )
         soundTime = space.extractTime( soundPointTime )
         readings = []
@@ -23,7 +26,7 @@ class phonoSensors:
         return readings
 
     def detectSource(self, readings, numSounds):
-        dims = self.space.dimensions()
+        dims = self.mSpace.dimensions()
         variablesCoefMatrix = []
         dependentVarValues = []
         r1 = readings[0]
