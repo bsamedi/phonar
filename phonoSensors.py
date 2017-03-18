@@ -47,6 +47,5 @@ class phonoSensors:
             dependentVarValues.append( constCoef )
         # solve the equation system
         soundSource = np.linalg.solve(variablesCoefMatrix, dependentVarValues)
-        print('Solution is {}\n'.format(soundSource))
 
         return soundSource

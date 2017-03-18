@@ -83,6 +83,15 @@ class TestCircleSensors(unittest.TestCase):
         self.assertAlmostEquals( s.space.distance(s0, center), 15, 5)
         self.assertAlmostEquals( s.space.distance(s1, center), 15, 5)
 
+import random
+
+def numberWithin(num, min, max):
+    if num<min:
+        return min
+    if num>max:
+        return max
+    return num
+
 class TestDetectSource(unittest.TestCase):
     def test_fourSensors(self):
         s = phonoSensors(space2D())
@@ -92,9 +101,74 @@ class TestDetectSource(unittest.TestCase):
         s.add( (-1, 0) )
         soundOriginal = (0, 0, 0)
         readings = s.idealReadings( soundOriginal )
-        print('\nReadings:\n{}\n'.format(readings))
         soundDetected = s.detectSource(readings, 1)
-        print('\nsoundDetected\n{}\n'.format(soundDetected))
+        for i in range(len(soundOriginal)):
+            self.assertAlmostEqual(soundDetected[i], soundOriginal[i], 2)
+
+    def test_fourSensors2(self):
+        s = phonoSensors(space2D())
+        s.add( (0, 0) )
+        s.add( (1, 1) )
+        s.add( (0, -1) )
+        s.add( (-1, 0) )
+        soundOriginal = (5, 7, 14)
+        readings = s.idealReadings( soundOriginal )
+        soundDetected = s.detectSource(readings, 1)
+        for i in range(len(soundOriginal)):
+            self.assertAlmostEqual(soundDetected[i], soundOriginal[i], 2)
+
+    def test_fourSensorsFuzzied0_1Pct(self):
+        s = phonoSensors(space2D())
+        s.add( (0, 0) )
+        s.add( (1000, 1000) )
+        s.add( (0, -1000) )
+        s.add( (-1000, 0) )
+        soundOriginal = (200, 200, 50)
+        readings = s.idealReadings( soundOriginal )
+        readingsFozzy = [ [ v * numberWithin(random.normalvariate(1, 0.001), 0.999, 1.001) for v in r ] for r in readings]
+        soundDetected = s.detectSource(readingsFozzy, 1)
+        for i in range(len(soundOriginal)-1):
+            self.assertAlmostEqual(soundDetected[i], soundOriginal[i], -1)
+
+    def test_fourSensorsFuzzied1Pct(self):
+        s = phonoSensors(space2D())
+        s.add( (0, 0) )
+        s.add( (1000, 1000) )
+        s.add( (0, -1000) )
+        s.add( (-1000, 0) )
+        soundOriginal = (400, 100, 70)
+        readings = s.idealReadings( soundOriginal )
+        readingsFozzy = [ [ v * numberWithin(random.normalvariate(1, 0.01), 0.99, 1.01) for v in r ] for r in readings]
+        soundDetected = s.detectSource(readingsFozzy, 1)
+        #print('\nsoundDetected\n{}\n'.format(soundDetected))
+        for i in range(len(soundOriginal)-1):
+            self.assertAlmostEqual(soundDetected[i], soundOriginal[i], -2)
+
+from space3D import space3D
+import time
+
+class TestDetectSource3D(unittest.TestCase):
+    def test_NearlyPlanarExact(self):
+        s = phonoSensors(space3D())
+        s.add( (0, 0, 0) )
+        s.add( (1000, 1000, 0) )
+        s.add( (0, -1000, 20) )
+        s.add( (-1000, 0, 0) )
+        s.add( (-1000, -1000, 0) )
+        soundOriginal = (400, 100, 0, 70)
+        readings = s.idealReadings( soundOriginal )
+        soundDetected = s.detectSource(readings, 1)
+        for i in range(len(soundOriginal)-1):
+            self.assertAlmostEqual(soundDetected[i], soundOriginal[i], 2)
+
+    def test_speed(self):
+        start = time.time()
+        numIterations = 2000
+        for i in range(numIterations):
+            self.test_NearlyPlanarExact()
+        end = time.time()
+        self.assertLess(end-start, numIterations*0.0005)
+        #print('\ntime per detection, microseconds = {}\n'.format( round(1e6*(end-start)/numIterations, 1)))
 
 if __name__ == '__main__':
     unittest.main()
