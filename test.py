@@ -55,13 +55,13 @@ class TestPhonoSensors(unittest.TestCase):
         s = phonoSensors2D()
         s.add( (10, 0) )
         readings = s.idealReadings( (0, 0, 0) )
-        self.assertAlmostEqual(s.space().extractTime(readings[0]), 10/0.34029, 2)
+        self.assertAlmostEqual(s.space().extractTime(readings[0]), 10/340.29, 2)
 
     def test_oneIdealReading2(self):
         s = phonoSensors2D()
         s.add( (3, 4) )
         readings = s.idealReadings( (-30, -40, 4) )
-        self.assertAlmostEqual( s.space().extractTime(readings[0]), 4 + 55/0.34029, 2)
+        self.assertAlmostEqual( s.space().extractTime(readings[0]), 4 + 55/340.29, 2)
 
 from circleSensors import circleSensors
 from math import sqrt
@@ -122,7 +122,7 @@ class TestDetectSource(unittest.TestCase):
         s.add( (-1000, 0) )
         soundOriginal = (200, 200, 50)
         readings = s.idealReadings( soundOriginal )
-        readingsFozzy = [ [ v * numberWithin(random.normalvariate(1, 0.001), 0.999, 1.001) for v in r ] for r in readings]
+        readingsFozzy = [ [ v * numberWithin(random.normalvariate(1, 0.0001), 0.9999, 1.001) for v in r ] for r in readings]
         soundDetected = s.detectSource(readingsFozzy, 1)
         for i in range(len(soundOriginal)-1):
             self.assertAlmostEqual(soundDetected[i], soundOriginal[i], -1)
@@ -135,7 +135,7 @@ class TestDetectSource(unittest.TestCase):
         s.add( (-1000, 0) )
         soundOriginal = (400, 100, 70)
         readings = s.idealReadings( soundOriginal )
-        readingsFozzy = [ [ v * numberWithin(random.normalvariate(1, 0.01), 0.99, 1.01) for v in r ] for r in readings]
+        readingsFozzy = [ [ v * numberWithin(random.normalvariate(1, 0.001), 0.999, 1.01) for v in r ] for r in readings]
         soundDetected = s.detectSource(readingsFozzy, 1)
         #print('\nsoundDetected\n{}\n'.format(soundDetected))
         for i in range(len(soundOriginal)-1):

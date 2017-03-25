@@ -2,7 +2,7 @@ import random
 import numpy as np
 
 class phonoSensors:
-    SPEED_OF_SOUND=0.34029 # km per second
+    SPEED_OF_SOUND=340.29 # meters per second
 
     def __init__(self, space):
         self.sensors = []
