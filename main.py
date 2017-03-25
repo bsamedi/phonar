@@ -1,3 +1,4 @@
+# concept of how the classes are intended to be used
 from phonoSensors import circleSensors
 
 # create sensors located on an ideal circle
