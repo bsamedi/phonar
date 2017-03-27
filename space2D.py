@@ -1,23 +1,21 @@
-from space import space
+from space import Space, Point, PointTime
 from math import sqrt
+from collections import namedtuple
 
-class space2D(space):
+class Point2D( namedtuple('Point2D', ['x','y']), Point ):
+    def distance(self, p):
+        return sqrt((self.x-p.x)**2 + (self.y-p.y)**2)
+
+    def addTime(self, t):
+        return PointTime2D(self.x, self.y, t)
+
+class PointTime2D( namedtuple('PointTime2D', ['x','y','t']), PointTime ):
+    def point(self):
+        return Point2D(self.x, self.y)
+
+class Space2D(Space):
+    Point = Point2D
+    PointTime = PointTime2D
+    
     def zero(self):
-        return (0.0, 0.0)
-
-    def squareDistance(self, p1, p2):
-        p1x, p1y = p1[0], p1[1]
-        p2x, p2y = p2[0], p2[1]
-        return (p1x - p2x) ** 2 + (p1y - p2y) ** 2
-
-    def distance(self, p1, p2):
-        return sqrt( self.squareDistance(p1, p2) )
-
-    def extractPoint(self, pointTime):
-        return (pointTime[0], pointTime[1])
-
-    def extractTime(self, pointTime):
-        return pointTime[2]
-
-    def pointTime(self, point, time):
-        return (point[0], point[1], time)
+        return self.Point(0.0, 0.0)
