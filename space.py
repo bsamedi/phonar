@@ -1,19 +1,33 @@
 # X-dimensional tuple-based mathematics space mathematics
-class space:
+class Point:
+    def distance(self, other):
+        raise NotImplementedError()
+    
+    def addTime(self, time):
+        raise NotImplementedError()
+    
+    def coordinate(self, index):
+        if index < len(self):
+            return self[index]
+        else:
+            raise IndexError()
+
+class PointTime:
+    def distance(self, other):
+        raise NotImplementedError()
+    
+    def point(self):
+        raise NotImplementedError()
+
+    def coordinate(self, index):
+        if index < len(self)-1:
+            return self[index]
+        else:
+            raise IndexError()
+
+class Space:
     def dimensions(self):
         return len(self.zero())
 
-    def distance(self, p1, p2):
-        raise NotImplementedError()
-
     def zero(self):
-        raise NotImplementedError()
-
-    def extractPoint(self, pointTime):
-        raise NotImplementedError()
-
-    def extractTime(self, pointTime):
-        raise NotImplementedError()
-
-    def pointTime(self, point, time):
         raise NotImplementedError()
